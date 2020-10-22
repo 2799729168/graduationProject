@@ -12,7 +12,7 @@
     <artifactId>graproject</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>graProject</name>
+    <name>graproject</name>
 
     <properties>
         <java.version>1.8</java.version>
