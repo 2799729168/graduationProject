@@ -41,6 +41,7 @@
     <modules>
         <module>registercenter</module>
         <module>myclient</module>
+        <module>gateway</module>
     </modules>
 
 </project>
