@@ -11,6 +11,7 @@
     <groupId>com</groupId>
     <artifactId>graproject</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
     <name>graProject</name>
 
     <properties>
