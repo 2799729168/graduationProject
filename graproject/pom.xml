@@ -78,6 +78,7 @@
         <module>myclient</module>
         <module>gateway</module>
         <module>myclient2</module>
+        <module>oauth</module>
     </modules>
 
 </project>
