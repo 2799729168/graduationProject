@@ -10,8 +10,9 @@ import java.nio.file.AccessDeniedException;
  */
 @ControllerAdvice
 public class SecurityAdvice {
-    @ExceptionHandler(AccessDeniedException.class)
-    public String denied(){
+    @ExceptionHandler(value = {Exception.class})
+    public String denied(Exception e){
+        e.printStackTrace();
         return "redirect:/login";
     }
 }
