@@ -11,6 +11,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  * @author pb
@@ -18,13 +20,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @EnableWebSecurity
 @Configuration
 //开启申明式资源权限
-@EnableGlobalMethodSecurity(securedEnabled = true)
+//@EnableGlobalMethodSecurity(securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    @Override
-    @Bean
-    public UserDetailsService userDetailsService(){
-        return new UserDetailService();
-    }
+//    @Override
+//    @Bean
+//    public UserDetailsService userDetailsService(){
+//        return new UserDetailService();
+//    }
 
     /**
      * @param http
@@ -34,14 +36,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/r/r1").hasAuthority("p1")
-                .antMatchers("/r/r2").hasAuthority("p2")
-                .antMatchers("/r/**").authenticated()
-                .anyRequest().permitAll()
+//所有资源必须授权后访问
+                .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .successForwardUrl("/success")
+                .loginProcessingUrl("/login")
+                .permitAll()//指定认证页面可以匿名访问
+//关闭跨站请求防护
                 .and().csrf().disable();
+//        http.authorizeRequests()
+//                .antMatchers("/r/r1").hasAuthority("p1")
+//                .antMatchers("/r/r2").hasAuthority("p2")
+//                .antMatchers("/r/**").authenticated()
+//                .anyRequest().permitAll()
+//                .and()
+//                .formLogin()
+//                .successForwardUrl("/success")
+//                .and().csrf().disable();
     }
 
     /**
@@ -51,7 +62,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(new UserDetailService()).passwordEncoder(new BCryptPasswordEncoder());
+        auth.userDetailsService(new UserDetailService()).passwordEncoder(passwordEncoder());
     }
 
     //AuthenticationManager对象在OAuth2认证服务中要使用，提取放入IOC容器中
@@ -59,5 +70,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
+    }
+    @Bean
+    public PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
     }
 }
