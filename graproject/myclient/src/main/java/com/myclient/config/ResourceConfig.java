@@ -11,20 +11,25 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.R
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.RemoteTokenServices;
 import org.springframework.security.oauth2.provider.token.ResourceServerTokenServices;
+import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
 /**
  * @author pb
  */
 @Configuration
 @EnableResourceServer
-@EnableGlobalMethodSecurity(securedEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class ResourceConfig extends ResourceServerConfigurerAdapter {
+    public static final String key = "test";
     public static final String ResourceId = "r1";
 
     @Override
     public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
         resources.resourceId(ResourceId)
-                .tokenServices(tokenService())
+//                .tokenServices(tokenService())
+                .tokenStore(tokenStore())
                 .stateless(true);
     }
 
@@ -44,11 +49,27 @@ public class ResourceConfig extends ResourceServerConfigurerAdapter {
 
     }
 //    token校验
-    public ResourceServerTokenServices tokenService(){
-        RemoteTokenServices services = new RemoteTokenServices();
-        services.setCheckTokenEndpointUrl("http://localhost:9000/oauth/check_token");
-        services.setClientId("c1");
-        services.setClientSecret("test");
-        return services;
+//    public ResourceServerTokenServices tokenService(){
+//        RemoteTokenServices services = new RemoteTokenServices();
+//        services.setCheckTokenEndpointUrl("http://localhost:9000/oauth/check_token");
+//        services.setClientId("c1");
+//        services.setClientSecret("test");
+//        return services;
+//    }
+
+    //token保存策略
+
+    @Bean
+    public TokenStore tokenStore (){
+        return new JwtTokenStore(converter());
+    }
+
+//    jwt形式的token转化器
+
+    @Bean
+    public JwtAccessTokenConverter converter(){
+        JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
+        converter.setSigningKey(key);
+        return converter;
     }
 }

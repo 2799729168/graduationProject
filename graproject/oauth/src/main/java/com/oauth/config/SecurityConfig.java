@@ -66,6 +66,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     //AuthenticationManager对象在OAuth2认证服务中要使用，提取放入IOC容器中
+
     @Override
     @Bean
     public AuthenticationManager authenticationManagerBean() throws Exception {
