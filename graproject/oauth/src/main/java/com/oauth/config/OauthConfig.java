@@ -10,6 +10,7 @@ import org.springframework.security.core.token.DefaultToken;
 import org.springframework.security.core.token.TokenService;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.jwt.Jwt;
 import org.springframework.security.oauth2.config.annotation.builders.InMemoryClientDetailsServiceBuilder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
@@ -45,6 +46,10 @@ import java.util.Collections;
 @Configuration
 public class OauthConfig extends AuthorizationServerConfigurerAdapter {
     @Autowired
+    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private DataSource dataSource;
+    @Autowired
     private AuthenticationManager authenticationManager;
     @Autowired
     private AuthorizationServerTokenServices tokenServices;
@@ -54,13 +59,7 @@ public class OauthConfig extends AuthorizationServerConfigurerAdapter {
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        clients.inMemory().withClient("c1")
-        .secret(new BCryptPasswordEncoder().encode("test"))
-        .resourceIds("r1")
-        .authorizedGrantTypes("authorization_code","password","implicit","client_credentials")
-        .scopes("all")
-        .autoApprove(true)
-        .redirectUris("http://www.baidu.com");
+        clients.withClientDetails(clientDetailsService());
     }
 //    令牌端点安全约束
 
@@ -81,17 +80,23 @@ public class OauthConfig extends AuthorizationServerConfigurerAdapter {
                 .tokenServices(tokenServices);
     }
 
+    @Bean
+    public ClientDetailsService clientDetailsService(){
+        JdbcClientDetailsService jdbcClientDetailsService = new JdbcClientDetailsService(dataSource);
+        jdbcClientDetailsService.setPasswordEncoder(passwordEncoder);
+        return jdbcClientDetailsService;
+    }
     //授权信息保存策略
 
     @Bean
     public ApprovalStore approvalStore() {
-        return new InMemoryApprovalStore();
+        return new JdbcApprovalStore(dataSource);
     }
     //授权码模式数据来源
 
     @Bean
     public AuthorizationCodeServices authorizationCodeServices() {
-        return new InMemoryAuthorizationCodeServices();
+        return new JdbcAuthorizationCodeServices(dataSource);
     }
 
 }
