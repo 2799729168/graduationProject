@@ -37,6 +37,10 @@ public class ResourceConfig extends ResourceServerConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
 //指定不同请求方式访问资源所需要的权限，一般查询是read，其余是write。
+                .antMatchers("/swagger-ui.html").permitAll()
+                .antMatchers("/webjars/**").permitAll()
+                .antMatchers("/v2/**").permitAll()
+                .antMatchers("/swagger-resources/**").permitAll()
                 .antMatchers("/**").access("#oauth2.hasScope('all')")
                 .and()
                 .headers().addHeaderWriter((request, response) -> {
