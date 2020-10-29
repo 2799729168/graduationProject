@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.token.DefaultToken;
+import org.springframework.security.core.token.TokenService;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.jwt.Jwt;
@@ -43,11 +44,11 @@ import java.util.Collections;
 @EnableAuthorizationServer
 @Configuration
 public class OauthConfig extends AuthorizationServerConfigurerAdapter {
-    public static final String key = "test";
     @Autowired
     private AuthenticationManager authenticationManager;
     @Autowired
-    private ClientDetailsService clientDetailsService;
+    private AuthorizationServerTokenServices tokenServices;
+
 
     //指定客户端登录信息来源
 
@@ -77,38 +78,9 @@ public class OauthConfig extends AuthorizationServerConfigurerAdapter {
                 .approvalStore(approvalStore())
                 .authenticationManager(authenticationManager)
                 .authorizationCodeServices(authorizationCodeServices())
-                .tokenServices(tokenServices());
+                .tokenServices(tokenServices);
     }
 
-//    自定义token获取服务
-
-    @Bean
-    public AuthorizationServerTokenServices tokenServices(){
-        DefaultTokenServices services = new DefaultTokenServices();
-        services.setTokenStore(tokenStore());
-        services.setSupportRefreshToken(true);
-        services.setClientDetailsService(clientDetailsService);
-        TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
-        tokenEnhancerChain.setTokenEnhancers(Collections.singletonList(converter()));
-        services.setTokenEnhancer(tokenEnhancerChain);
-        return services;
-    }
-
-    //token保存策略
-
-    @Bean
-    public TokenStore tokenStore (){
-        return new JwtTokenStore(converter());
-    }
-
-//    jwt形式的token转化器
-
-    @Bean
-    public JwtAccessTokenConverter converter(){
-        JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-        converter.setSigningKey(key);
-        return converter;
-    }
     //授权信息保存策略
 
     @Bean

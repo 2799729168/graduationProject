@@ -79,6 +79,7 @@
         <module>gateway</module>
         <module>myclient2</module>
         <module>oauth</module>
+        <module>publicutils</module>
     </modules>
 
 </project>
