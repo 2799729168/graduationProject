@@ -9,7 +9,7 @@ spring:
 
 
 mybatis:
-  typeAliasesPackage: com.hand.hap.cloud.member.entity #指向实体类包路径
+  typeAliasesPackage: com.oauth.mapper #指向实体类包路径
   mapperLocations: classpath:mapper/*.xml #classpath 路径下 mapper 包下，* 代表会扫描所有 xml 文件
 
 # tk配置

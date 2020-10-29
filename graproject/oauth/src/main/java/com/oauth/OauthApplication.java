@@ -12,7 +12,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  * @author pb
  */
 @SpringBootApplication
-@MapperScan("com.oauth.mapper")
+@MapperScan(basePackages = "com.oauth.mapper")
 @EnableSwagger2
 @EnableEurekaClient
 public class OauthApplication {
