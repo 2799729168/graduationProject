@@ -41,16 +41,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/webjars/**").permitAll()
                 .antMatchers("/v2/**").permitAll()
                 .antMatchers("/swagger-resources/**").permitAll()
-                .anyRequest().authenticated()
-
                 .and()
                 .formLogin()
                 .loginProcessingUrl("/login")
 //关闭跨站请求防护
                 .and().csrf().disable();
 //        http.authorizeRequests()
-//                .antMatchers("/r/r1").hasAuthority("p1")
-//                .antMatchers("/r/r2").hasAuthority("p2")
 //                .antMatchers("/r/**").authenticated()
 //                .anyRequest().permitAll()
 //                .and()
