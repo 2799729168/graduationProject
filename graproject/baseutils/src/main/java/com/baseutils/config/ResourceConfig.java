@@ -1,5 +1,6 @@
-package com.pubutils.config;
+package com.baseutils.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -18,6 +19,8 @@ import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 //@EnableGlobalMethodSecurity(prePostEnabled = true)
 
 public class ResourceConfig extends ResourceServerConfigurerAdapter {
+    @Value("${oauth.scope}")
+    private String scope = "";
     public static final String key = "test";
 //    public static final String ResourceId = "r1";
 
@@ -37,7 +40,7 @@ public class ResourceConfig extends ResourceServerConfigurerAdapter {
                 .antMatchers("/webjars/**").permitAll()
                 .antMatchers("/v2/**").permitAll()
                 .antMatchers("/swagger-resources/**").permitAll()
-                .antMatchers("/**").access("#oauth2.hasAnyScope('API','ADMIN')")
+                .antMatchers("/**").access("#oauth2.hasAnyScope("+scope+")")
                 .and()
                 .headers().addHeaderWriter((request, response) -> {
             response.addHeader("Access-Control-Allow-Origin", "*");//允许跨域

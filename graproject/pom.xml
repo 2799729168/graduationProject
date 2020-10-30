@@ -80,6 +80,7 @@
         <module>myclient2</module>
         <module>oauth</module>
         <module>publicutils</module>
+        <module>baseutils</module>
     </modules>
 
 </project>
