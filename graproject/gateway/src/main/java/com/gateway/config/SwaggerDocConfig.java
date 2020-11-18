@@ -47,6 +47,7 @@ class SwaggerDocConfig implements SwaggerResourcesProvider {
         routeLocator.getRouteDefinitions().subscribe(routeDefinition -> {
             String name = routeDefinition.getId().substring(EUREKA_SUB_PRIX.length());
             if(!"spring-cloud-gateway".equalsIgnoreCase(name)){
+//                得到了这个服务的路由并写入swagger
                 resources.add(swaggerResource(name,routeDefinition.getPredicates().get(0).getArgs().get("pattern").replace("/**", API_URI)));
             }
         });

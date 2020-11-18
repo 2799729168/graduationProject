@@ -1,5 +1,6 @@
 package com.myclient.controller;
 
+import io.swagger.annotations.ApiOperation;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
