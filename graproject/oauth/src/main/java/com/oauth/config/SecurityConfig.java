@@ -1,6 +1,8 @@
 package com.oauth.config;
 
 import com.oauth.service.UserDetailService;
+import org.apache.catalina.core.ApplicationFilterChain;
+import org.apache.tomcat.websocket.server.WsFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,6 +15,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
+import org.springframework.security.web.context.SecurityContextPersistenceFilter;
 
 /**
  * @author pb

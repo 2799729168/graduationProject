@@ -12,7 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class UserDetailService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        UserDetails build = User.withUsername("test").password(new BCryptPasswordEncoder().encode("test")).authorities("p1").build();
+        UserDetails build = User.withUsername("test").password(new BCryptPasswordEncoder().encode("a")).authorities("p1").build();
         return build;
     }
 }
