@@ -31,10 +31,10 @@ public class TokenFilter implements GlobalFilter, Ordered {
         if(!StringUtils.isEmpty(str)){
             System.out.println(str);
         }else{
-//            MultiValueMap<String, HttpCookie> cookies = servletRequest.getCookies();
-//            List<HttpCookie> userName = cookies.get("userName");
+            MultiValueMap<String, HttpCookie> cookies = servletRequest.getCookies();
+            List<HttpCookie> userName = cookies.get("username");
             Jedis resource = this.jedisPool.getResource();
-            String userInfo = resource.get("auth_to_access:test");
+            String userInfo = resource.get("auth_to_access:"+userName.get(0));
             System.out.println(userInfo);
             String[] s = userInfo.split("\\$");
             System.out.println(s[5]);
