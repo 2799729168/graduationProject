@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class TestMapper {
     @MyJDBCAnnotation(sql = "select * from test where id = $pb$ ")
-    public TestEntity selectAll(String s){
+    public TestEntity selectAll(Integer s){
         return null;
     }
     public void test(){

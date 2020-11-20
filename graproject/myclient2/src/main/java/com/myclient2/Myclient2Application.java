@@ -20,7 +20,7 @@ public class Myclient2Application {
     public static void main(String[] args) {
         AnnotationConfigApplicationContext annotationConfigApplicationContext = new AnnotationConfigApplicationContext(MainConfig.class);
         TestMapper bean = annotationConfigApplicationContext.getBean(TestMapper.class);
-        System.out.println(bean.selectAll("1"));
+        System.out.println(bean.selectAll(1));
         bean.test();
 //        SpringApplication.run(Myclient2Application.class, args);
 
