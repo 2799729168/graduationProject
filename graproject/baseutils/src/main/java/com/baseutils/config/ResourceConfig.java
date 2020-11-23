@@ -42,7 +42,7 @@ public class ResourceConfig extends ResourceServerConfigurerAdapter {
                 .antMatchers("/webjars/**").permitAll()
                 .antMatchers("/v2/**").permitAll()
                 .antMatchers("/swagger-resources/**").permitAll()
-                .antMatchers("/**").access("#oauth2.hasAnyScope("+scope+")")
+                .antMatchers("/r/**").access("#oauth2.hasAnyScope("+scope+")")
                 .and()
                 .headers().addHeaderWriter((request, response) -> {
             response.addHeader("Access-Control-Allow-Origin", "*");//允许跨域

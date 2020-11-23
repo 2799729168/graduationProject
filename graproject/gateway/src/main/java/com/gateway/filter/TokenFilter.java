@@ -34,16 +34,14 @@ public class TokenFilter implements GlobalFilter, Ordered {
             MultiValueMap<String, HttpCookie> cookies = servletRequest.getCookies();
             List<HttpCookie> userName = cookies.get("username");
             Jedis resource = this.jedisPool.getResource();
-            String userInfo = resource.get("auth_to_access:"+userName.get(0));
-            System.out.println(userInfo);
+            String userInfo = resource.get("auth_to_access:"+userName.get(0).getValue());
             if(userInfo!=null){
                 String[] s = userInfo.split("\\$");
-                System.out.println(s[5]);
                 mutate.header("Authorization","Bearer "+s[5]);
             }
         }
         ServerHttpRequest build = mutate.build();
-        return  chain.filter(exchange);
+        return chain.filter(exchange);
     }
 
     @Override
