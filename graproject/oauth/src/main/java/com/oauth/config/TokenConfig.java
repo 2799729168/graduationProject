@@ -47,13 +47,7 @@ public class TokenConfig {
 
     @Bean
     public TokenStore tokenStore (){
-        RedisTokenStore redisTokenStore = new RedisTokenStore(redisConnectionFactory);
-        redisTokenStore.setAuthenticationKeyGenerator(oAuth2Authentication -> {
-            Object details = oAuth2Authentication.getUserAuthentication().getDetails();
-            Map<String,String> userDetails = (Map<String, String>) details;
-            return userDetails.get("username");
-        });
-        return redisTokenStore;
+        return new InMemoryTokenStore();
     }
 
 //    jwt形式的token转化器

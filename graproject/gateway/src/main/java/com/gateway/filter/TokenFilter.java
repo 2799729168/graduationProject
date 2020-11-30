@@ -27,17 +27,23 @@ public class TokenFilter implements GlobalFilter, Ordered {
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         ServerHttpRequest servletRequest = exchange.getRequest();
         ServerHttpRequest.Builder mutate = servletRequest.mutate();
-        String str = servletRequest.getHeaders().get("Authorization").get(0);
+        String str = null;
+        try {
+            str = servletRequest.getHeaders().get("Authorization").get(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         if(!StringUtils.isEmpty(str)){
             System.out.println(str);
         }else{
             MultiValueMap<String, HttpCookie> cookies = servletRequest.getCookies();
             List<HttpCookie> userName = cookies.get("username");
-            Jedis resource = this.jedisPool.getResource();
-            String userInfo = resource.get("auth_to_access:"+userName.get(0).getValue());
-            if(userInfo!=null){
-                String[] s = userInfo.split("\\$");
-                mutate.header("Authorization","Bearer "+s[5]);
+            if(userName != null && userName.get(0) != null){
+                Jedis resource = this.jedisPool.getResource();
+                List<String> token = resource.hmget("access_token",userName.get(0).getValue());
+                if(token!=null && token.get(0)!= null){
+                    mutate.header("Authorization","Bearer "+token.get(0));
+                }
             }
         }
         ServerHttpRequest build = mutate.build();

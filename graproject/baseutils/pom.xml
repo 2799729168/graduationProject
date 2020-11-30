@@ -7,6 +7,7 @@
         <groupId>com</groupId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
+    <groupId>com</groupId>
     <modelVersion>4.0.0</modelVersion>
     <version>0.0.1-SNAPSHOT</version>
     <artifactId>baseutils</artifactId>
@@ -24,6 +25,11 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-oauth2</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
         </dependency>
     </dependencies>
 
